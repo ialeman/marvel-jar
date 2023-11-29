@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.sngular</groupId>
-	<artifactId>marvel</artifactId>
+	<artifactId>marvel-jar</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>marvel</name>
+	<name>marvel-jar</name>
 	<description>Marvel Demo Project</description>
 	<properties>
 		<java.version>11</java.version>

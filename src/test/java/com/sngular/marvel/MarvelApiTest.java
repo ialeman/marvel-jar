@@ -19,7 +19,8 @@ public class MarvelApiTest {
     
 	@Test
     public void testGetCharacters() {
-        MarvelApi marvelApiClient = new MarvelApi(apiPrivateKey, apiPublicKey);
+		String timestamp = "2";
+        MarvelApi marvelApiClient = new MarvelApi(apiPrivateKey, apiPublicKey, timestamp);
         MarvelPage page = marvelApiClient.getCharacters();
         System.out.println(page.toString());
         assertNotNull(page);
@@ -27,7 +28,8 @@ public class MarvelApiTest {
 
     @Test
     public void testGetCharacterById() {
-    	MarvelApi marvelApiClient = new MarvelApi(apiPrivateKey, apiPublicKey);
+    	String timestamp = "2";
+    	MarvelApi marvelApiClient = new MarvelApi(apiPrivateKey, apiPublicKey, timestamp);
         MarvelPage page = marvelApiClient.getCharacterById(1012717);
         System.out.println(page.toString());
         assertNotNull(page);
