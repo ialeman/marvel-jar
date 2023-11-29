@@ -20,17 +20,19 @@ public class MarvelApi implements MarvelApiService {
 
 	private String apiPrivateKey;
 	private String apiPublicKey;
+	private String timestamp;
 	
-    public MarvelApi(String apiPrivateKey, String apiPublicKey) {
+    public MarvelApi(String apiPrivateKey, String apiPublicKey, String timestamp) {
         this.apiPrivateKey = apiPrivateKey;
         this.apiPublicKey = apiPublicKey;
+        this.timestamp = timestamp;
     }
 
     @Override
     public MarvelPage getCharacters() {
     	try {
-    		String apiKey = generateMD5ApiKey(apiPrivateKey, apiPublicKey);
-            String completeUrl = MARVEL_API + "?apikey="+apiPublicKey+"&hash="+apiKey+"&ts=2";
+    		String apiKey = generateMD5ApiKey(timestamp, apiPrivateKey, apiPublicKey);
+            String completeUrl = MARVEL_API + "?apikey="+apiPublicKey+"&hash="+apiKey+"&ts="+timestamp;
             
             Unirest.setTimeouts(0, 0);
         	Gson gson = new Gson();
@@ -38,6 +40,7 @@ public class MarvelApi implements MarvelApiService {
                     .get(completeUrl)
                     .header("Content-Type", "application/json")
                     .asString();
+            
             if (response.getStatus() == 200) {
     			MarvelData marvelData = gson.fromJson(response.getBody(), MarvelData.class);
                 return marvelData.getData();
@@ -54,8 +57,8 @@ public class MarvelApi implements MarvelApiService {
     @Override
     public MarvelPage getCharacterById(int characterId) {
     	try {
-    		String apiKey = generateMD5ApiKey(apiPrivateKey, apiPublicKey);
-            String completeUrl = MARVEL_API + "/"+characterId+"?apikey="+apiPublicKey+"&hash="+apiKey+"&ts=2";
+    		String apiKey = generateMD5ApiKey(timestamp, apiPrivateKey, apiPublicKey);
+            String completeUrl = MARVEL_API + "/"+characterId+"?apikey="+apiPublicKey+"&hash="+apiKey+"&ts="+timestamp;
             
             Unirest.setTimeouts(0, 0);
         	Gson gson = new Gson();
@@ -63,6 +66,7 @@ public class MarvelApi implements MarvelApiService {
                     .get(completeUrl)
                     .header("Content-Type", "application/json")
                     .asString();
+            
             if (response.getStatus() == 200) {
     			MarvelData marvelData = gson.fromJson(response.getBody(), MarvelData.class);
                 return marvelData.getData();
@@ -76,8 +80,8 @@ public class MarvelApi implements MarvelApiService {
         }
     }
     
-    private String generateMD5ApiKey(String apiPrivateKey, String apiPublicKey) {
-    	return DigestUtils.md5Hex("2"+apiPrivateKey+apiPublicKey);
+    private String generateMD5ApiKey(String timestamp, String apiPrivateKey, String apiPublicKey) {
+    	return DigestUtils.md5Hex(timestamp+apiPrivateKey+apiPublicKey);
     }
 
 }
